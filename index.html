@@ -1,0 +1,603 @@
+<html>
+  <head>
+    <title>KlaretyAI_WebMap</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        #map-right {
+          height: 100%;
+          width: 100%;
+        }
+        #sidePanelLeft1 {
+        position: relative;
+        /* top: 50px; */
+        left: 20px;
+        /* background-image: linear-gradient(45deg, rgba(13, 34, 67, 0.2) 25%, transparent 25%, transparent 75%, rgba(13, 34, 67, 0.2) 75%, rgba(13, 34, 67, 0.2));
+        background-size: 16px 16px;  */
+        /* border: 2px solid rgba(13, 34, 67, 0.2); */
+        padding: 0px;
+        display: flex;
+        flex-direction: column;
+        width: 220px;
+      }
+        #sidePanelLeft2 {
+        position: relative;
+        /* top: 170.5px; */
+        left: 20px;
+        /* background-image: linear-gradient(45deg, rgba(13, 34, 67, 0.2) 25%, transparent 25%, transparent 75%, rgba(13, 34, 67, 0.2) 75%, rgba(13, 34, 67, 0.2));
+        background-size: 16px 16px; */
+        /* border: 2px solid rgba(13, 34, 67, 0.2); */
+        padding: 0px;
+        display: flex;
+        flex-direction: column;
+        width: 220px;
+      }
+      #sidePanelRight {
+        position: relative;
+        /* top: 351.5px; */
+        left: 20px;
+        /* background-image: linear-gradient(45deg, rgba(13, 34, 67, 0.2) 25%, transparent 25%, transparent 75%, rgba(13, 34, 67, 0.2) 75%, rgba(13, 34, 67, 0.2));
+        background-size: 16px 16px; 
+        border: 2px solid rgba(13, 34, 67, 0.2); */
+        padding: 0px;
+        display: flex;
+        flex-direction: column;
+        width: 220px;
+      }
+
+      
+      /* Hide the default radio button */
+input[type="checkbox"] {
+  display: none;
+}
+
+/* Style the custom radio button */
+input[type="checkbox"] + label {
+  position: relative;
+  padding-left: 25px;
+  cursor: pointer;
+}
+
+/* Style the radio button indicator */
+input[type="checkbox"] + label:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1px;
+  width: 12px;
+  height: 12px;
+  border-radius: 80%;
+  border: 2px solid #000000;
+}
+
+/* Style the checked radio button indicator */
+input[type="checkbox"]:checked + label:before {
+  background-color: rgb(13, 34, 67); /* Change this to your desired color */
+}
+
+/* Style the radio button text */
+input[type="checkbox"] + label:after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 5px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #fff; /* Change this to your desired color */
+  opacity: 0;
+}
+
+/* Show the dot when radio button is checked */
+input[type="checkbox"]:checked + label:after {
+  opacity: 1;
+}
+
+/* Style the slider */
+input[type="range"] {
+  width: 100px; /* Adjust the width of the slider */
+  height: 10px; /* Adjust the height of the slider */
+  border-radius: 5px; /* Adjust the border radius for rounded edges */
+}
+
+/* Style the slider track for Chrome */
+input[type="range"]::-webkit-slider-runnable-track {
+  background-color: #ddd; /* Adjust the color of the slider track */
+  height: 15px; /* Adjust the height of the slider track */
+  border-radius: 5px; /* Adjust the border radius for rounded edges */
+}
+
+/* Style the slider thumb for Chrome */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px; /* Adjust the width of the slider thumb */
+  height: 20px; /* Adjust the height of the slider thumb */
+  border-radius: 30%; /* Make the slider thumb circular */
+  background-color: #f10707; /* Adjust the color of the slider thumb */
+  cursor: pointer;
+}
+/* #legend {
+  background-color: rgba(200,200,200,0);
+  border: 1px solid rgba(200,200,200,0);
+  padding: 10px;
+} */
+
+#opacitySliderContainer2{
+  position: relative;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+#color-bar-container {
+  position: relative;
+  width: 150px; /* Set the desired width of the color bar */
+  height: 20px;
+  margin-top: 5px;
+  margin-bottom: 30px;
+}
+
+#color-bar-container_pop {
+  position: relative;
+  width: 150px; /* Set the desired width of the color bar */
+  height: 20px;
+  margin-top: 5px;
+  margin-bottom: 30px;
+}
+
+#color-bar-container_bul {
+  position: relative;
+  width: 150px; /* Set the desired width of the color bar */
+  height: 20px;
+  margin-top: 5px;
+  margin-bottom: 30px;
+}
+
+#color-bar {
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 150px;
+  background: linear-gradient(to right, #000000, rgb(50,0,0), rgb(150,0,0), rgb(250,50,0), rgb(255,150,0), rgb(255,255,0)); /* Adjust the color stops and values */
+}
+
+#color-bar_pop {
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 150px;
+  background: linear-gradient(to right, #0000FF, #00FFFF, #00FF00, #ADFF2F, #FFFF00, #FFA500); /* Adjust the color stops and values */
+}
+
+#color-bar_bul {
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 150px;
+  background: linear-gradient(to right, #000000, #320000, #960000, #FF3200, #FF9600, #FFFF00); /* Adjust the color stops and values */
+}
+
+#left-marker {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+}
+
+#right-marker {
+  position: absolute;
+  top: calc(100% + 5px);
+  right: 0;
+}
+
+#marker02 {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: calc(20% - 2px); /* Adjust the marker position as needed */
+}
+
+#marker04 {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: calc(40% - 2px); /* Adjust the marker position as needed */
+}
+
+#marker06 {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: calc(60% - 2px); /* Adjust the marker position as needed */
+}
+
+#marker08 {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: calc(80% - 2px); /* Adjust the marker position as needed */
+}
+
+.legend-marker {
+  font-size: 10px;
+}
+
+#color-bar-container {
+  display: none;
+}
+
+#color-bar-container.show {
+  display: block;
+}
+
+#color-bar-container_pop {
+  display: none;
+}
+
+#color-bar-container_pop.show {
+  display: block;
+}
+
+#color-bar-container_bul {
+  display: none;
+}
+
+#color-bar-container_bul.show {
+  display: block;
+}
+
+.custom-margin1 {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+
+  .custom-margin2 {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+
+  #totalArea {
+    color: #990000;
+  }
+  #totalPop {
+    color: #990000;
+  }
+  #NOB {
+    color: #990000;
+  }
+
+
+  .toolbar {
+      background-color: #1D1D1D;
+      color: white;
+      top:0;
+      padding: 5px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      z-index: 10000;
+    }
+    .toolbar .arrow-icon {
+      color: white;
+      font-size: 30px; /* Adjust the font size to make the arrow bigger */
+      margin-right: 20px;  
+      margin-left: 20px;
+      z-index:9999;
+    }
+    .toolbar img {
+      max-height: 40px;
+      left: 100px;
+      margin-left: 20px;
+      z-index:9999;
+    }
+    body {
+      margin: 0;
+    }
+    .popup {
+      position: absolute;
+      background-color: #13346722;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+      display: none;
+      font-size: 14;
+      z-index:9999;
+    }
+    .q-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: #1D1D1D;
+      color: white;
+      padding: 0px;
+      text-align: center;
+      font-family: Roboto,-apple-system,Helvetica Neue,Helvetica,Arial,sans-serif;
+      -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+    font-size: 14px;
+    z-index:9999;
+    }
+
+    .drawer-button {
+    background-color: #000000;
+    color: #fff;
+    padding: 6px 12px;
+    border: 1px solid #ffffff;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+  }
+
+  .drawer-button:hover {
+    background-color: #133467;
+  }
+
+  .drawer-button .drawer-icon {
+    font-family: Roboto,-apple-system,Helvetica Neue,Helvetica,Arial,sans-serif;
+    font-size: 42px;
+    }
+
+
+  .drawer {
+  position: fixed;
+  top: 50;
+  left: -260px; /* Start the drawer off-screen */
+  width: 240px;
+  height: 100vh;
+  border: 10px solid #133467;
+  border-top-width: 0px;
+  background-color: #ffffff;
+  transition: left 0.3s ease;
+
+}
+
+.drawer.open {
+  left: 0; /* Slide the drawer into view */
+}
+
+.panel {
+  border-bottom: 10px solid #13346788;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.panel:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.scrollable-section {
+  max-height: 250px; /* Adjust as needed */
+  overflow-y: auto;
+}
+
+.expand-button {
+  width: 240px;
+  background-color: #000000;
+  color: #fff;
+  padding: 10px 20px;
+  border: 1px solid #ffffff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: Roboto,-apple-system,Helvetica Neue,Helvetica,Arial,sans-serif;
+}
+
+.expand-button:hover{
+    background-color: #133467;
+  }
+
+.close {
+  display: none;
+}
+
+.close.show {
+  display: block;
+}
+
+.triangle-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 0;
+  height: 0;
+  margin-right: 8px;
+  margin-bottom: 3px;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 6px solid #fff;
+  transition: transform 0.3s ease;
+}
+
+.expand-button.expanded .triangle-icon {
+  transform: rotate(90deg);
+}
+
+
+</style>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/split.js/1.5.11/split.min.js"></script>
+
+    <!-- <link rel="stylesheet" type="text/css" href="./style.css" /> -->
+    <script type="module" src="./index.js"></script>
+  </head>
+  <body>
+
+     <!-- Toolbar section -->
+  <div class="toolbar">
+    <!-- Add your toolbar content here -->
+    <a href="https://klarety.bradenwong.com/">
+        <i class="arrow-icon fas fa-chevron-left" onmouseover="showPopup()" onmouseout="hidePopup()"></i>
+    </a>
+    <button id="drawerButton" class="drawer-button">
+      <span class="drawer-icon"></span>
+      Browse Layers
+    </button>
+    <img src="./klarety_light.png" alt="Toolbar Image">
+  </div>
+
+  <div id="popup" class="popup">
+    Back to Global View
+  </div>
+
+  <footer class="q-footer q-layout__section--marginal fixed-bottom text-center bg-dark">
+    © Klarety AI 2023
+  </footer>
+
+  <script>
+    function showPopup() {
+      var popup = document.getElementById("popup");
+      popup.style.display = "block";
+    }
+
+    function hidePopup() {
+      var popup = document.getElementById("popup");
+      popup.style.display = "none";
+    }
+  </script>
+
+  
+
+        <div id="map-right" class="map"></div>
+ 
+
+
+    <div id="drawer" class="drawer">
+      <button id="expandButton" class="expand-button"><span class="triangle-icon"></span>Syria Earthquake 2023</button>
+      <div id="enclose" class="close">
+      <section class="panel">
+    <div id="sidePanelLeft1" class="scrollable-section">
+      <h3>EO Layers</h3>
+
+      
+
+   
+
+      <div>
+        <input type="checkbox" id="toggleLayer2" checked>
+        <label for="toggleLayer2">EO (Post-disaster)</label>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="panel">
+    <div id="sidePanelLeft2" class="scrollable-section">
+        <h3>Analytical Layers</h3>
+        
+          <input type="checkbox" id="toggleLayer1" checked>
+          <label for="toggleLayer1">Damaged Area</label>
+
+        
+        <div id="opacitySliderContainer2" style="display: none;">
+          <label for="transparency-slider">Opacity:</label>
+          <input type="range" min="0" max="100" value="100" id="transparency-slider"> 
+        </div>
+
+        <div id = "ind-text" style="display: none;">
+          <label>NO. Impacted Individuals:</label>
+        </div> 
+
+        <div id="legend_pop">
+          <div id="color-bar-container_pop">
+            <div id="color-bar_pop"></div>
+            <span class="legend-marker" id="left-marker">0</span>
+            <span class="legend-marker" id="marker02">15</span>
+            <span class="legend-marker" id="marker04">30</span>
+            <span class="legend-marker" id="marker06">45</span>
+            <span class="legend-marker" id="marker08">60</span>
+            <span class="legend-marker" id="right-marker">75</span>
+          </div>
+        </div>
+        
+        
+        <input type="checkbox" id="toggleLayer4">
+        <label for="toggleLayer4">Damage Probability</label>
+
+        <!-- <div id="opacitySliderContainer1" style="display: none;">
+          <label for="opacitySlider">Opacity:</label>
+          <input type="range" id="opacitySlider" min="0" max="100" value="100">
+        </div> -->
+
+        <div id="legend">
+          <div id="color-bar-container">
+            <div id="color-bar"></div>
+            <span class="legend-marker" id="left-marker">0</span>
+            <span class="legend-marker" id="marker02">0.2</span>
+            <span class="legend-marker" id="marker04">0.4</span>
+            <span class="legend-marker" id="marker06">0.6</span>
+            <span class="legend-marker" id="marker08">0.8</span>
+            <span class="legend-marker" id="right-marker">1</span>
+          </div>
+        </div>
+
+        <input type="checkbox" id="toggleLayer_pop" checked>
+        <label for="toggleLayer_pop">Population</label>
+
+        <input type="checkbox" id="toggleLayer_bul" checked>
+        <label for="toggleLayer_bul">Building Footprint</label>
+
+        <div id = "ind-text_bul" style="display: none;">
+          <label>Building Damage Level (%):</label>
+        </div> 
+
+        <div id="legend_bul">
+          <div id="color-bar-container_bul">
+            <div id="color-bar_bul"></div>
+            <span class="legend-marker" id="left-marker">0</span>
+            <span class="legend-marker" id="marker02">20</span>
+            <span class="legend-marker" id="marker04">40</span>
+            <span class="legend-marker" id="marker06">65</span>
+            <span class="legend-marker" id="marker08">80</span>
+            <span class="legend-marker" id="right-marker">100</span>
+          </div>
+        </div>
+
+    </div>
+  </section>
+
+  <section class="panel">
+    <div id="sidePanelRight" class="scrollable-section">
+        <h3>Damage Summary</h3>
+        <p class="custom-margin1">Total Damage Area:</p> 
+        <p class="custom-margin2"><span id="totalArea"></span> m&sup2<br></p>
+        <p class="custom-margin1">Total Impacted Individuals:</p> 
+        <p class="custom-margin2"><span id="totalPop"></span><br></p>
+        <p class="custom-margin1">Total Impacted Buildings:</p> 
+        <p class="custom-margin2"><span id="NOB"></span><br></p>
+      </div>
+    </section>
+  </div>
+
+  <button id="expandButton2" class="expand-button"><span class="triangle-icon"></span>Hurricane IAN 2022</button>
+<div id="enclose2" class="close">
+  <section class="panel">
+    <div id="sidePanelLeft1" class="scrollable-section">
+    <div>
+      <input type="checkbox" id="toggleLayer_IAN_EO" checked>
+      <label for="toggleLayer_IAN_EO">EO (Post-disaster)</label>
+    </div>
+  </div>
+  </section>
+
+  </div>
+    </div>
+ 
+  
+    
+
+    <!-- 
+      The `defer` attribute causes the callback to execute after the full HTML
+      document has been parsed. For non-blocking uses, avoiding race conditions,
+      and consistent behavior across browsers, consider loading using Promises.
+      See https://developers.google.com/maps/documentation/javascript/load-maps-js-api
+      for more information.
+      -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAEOyvyCBYf5ssb2hywp8Y7yjtm44l0wek&&callback=initMap&libraries=drawing,geometry"
+      defer
+    ></script>
+  </body>
+</html>
